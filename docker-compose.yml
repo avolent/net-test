@@ -1,8 +1,10 @@
-version: '3.9'
+version: '3'
 
 services:
   nettest:
     image: nettest
-    build:
-      context: .
-      dockerfile: ./Dockerfile
+    build: .
+    volumes:
+      - type: bind
+        source: ./app
+        target: /app
