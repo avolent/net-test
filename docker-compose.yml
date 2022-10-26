@@ -2,9 +2,12 @@ version: '3'
 
 services:
   nettest:
-    image: nettest
+    image: nettest:1
     build: .
     volumes:
       - type: bind
         source: ./app
         target: /app
+      - type: bind
+        source: ./ookla
+        target: /root/.config/ookla
