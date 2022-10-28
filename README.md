@@ -1,6 +1,6 @@
-<h1 align="center">net-test</h1>
+<h1 align="center">Net-Test</h1>
 
-> A Python wrapper for the Speedtest CLI from Speedtest.net - https://www.speedtest.net/apps/cli
+> A Python wrapper for the Speedtest CLI from [Speedtest.net](https://www.speedtest.net/apps/cli) with my own twist.
 
 ## Goal
 
@@ -17,6 +17,7 @@ The following tools need to be installed before running the tool.
 - Docker
 - Docker Compose
 - Make
+- Google AUTH0 Key for Google Sheet/Drive API
 
 ### Using the tool
 
