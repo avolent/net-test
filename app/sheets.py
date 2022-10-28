@@ -21,9 +21,9 @@ def main(results: str, header: str):
         # Create worksheet
         worksheet = sheet.add_worksheet(MONTH)
         # Add header row
-        worksheet.update_row(1, header.strip().replace('"', "").split(","))
+        worksheet.update_row(1, header.replace('"', "").strip().split(","))
     # Append results to next row
-    worksheet.append_table(results.strip().replace('"', "").split(","), "A1")
+    worksheet.append_table(results.replace('"', "").strip().split(","), "A1")
       
 if __name__ == "__main__":
     main(results, header)
