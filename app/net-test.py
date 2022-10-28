@@ -1,8 +1,9 @@
 import os, subprocess, sys
 from datetime import datetime
+import sheets
 
 # Global Variables
-HEADER = '"timestamp","server name","server id","idle latency","idle jitter","packet loss","download","upload","download bytes","upload bytes","share url","download server count","download latency","download latency jitter","download latency low","download latency high","upload latency","upload latency jitter","upload latency low","upload latency high","idle latency low","idle latency high"\n'
+HEADER = '"timestamp", "server name", "server id", "idle latency", "idle jitter", "packet loss", "download", "upload", "download bytes", "upload bytes", "share url", "download server count", "download latency", "download latency jitter", "download latency low", "download latency high", "upload latency", "upload latency jitter", "upload latency low", "upload latency high", "idle latency low", "idle latency high"\n'
 DIR_PATH = os.path.dirname(os.path.realpath(__file__))
 TIMESTAMP = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
@@ -32,6 +33,8 @@ def speedtest(args: list) -> str:
         results = subprocess.run(args, capture_output=True, text=True)
     if not set(["CSV", "csv"]).isdisjoint(set(args)): 
         file_write(f'"{TIMESTAMP}", {results.stdout}')
+        # Google sheets
+        sheets.main(f'"{TIMESTAMP}", {results.stdout}', HEADER)
     print(results.stdout)
     return results
 

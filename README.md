@@ -26,5 +26,7 @@ The following tools need to be installed before running the tool.
 
 #### More Commands
 
-More commands can be seen in the Makefile.
+make help - Show the help output for speedtest cli.
+make servers - 
+
 

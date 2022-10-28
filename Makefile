@@ -3,7 +3,7 @@ COMPOSE_BUILD_NETTEST = docker compose build nettest
 COMPOSE_RUN_NETTEST = docker compose run --rm nettest
 COMPOSE_RUN_BASH = docker compose run --rm --entrypoint bash nettest
 DOCKER_CLEAN = docker compose down --remove-orphans && docker image prune && docker network prune
-
+# Default Speedtest arguments
 ARGUMENTS = -f csv -A
 
 .PHONY: run_test

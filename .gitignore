@@ -3,3 +3,6 @@ output.csv
 
 # vscode files
 .vscode
+
+# API Key
+*.json
