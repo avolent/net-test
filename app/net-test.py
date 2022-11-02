@@ -2,7 +2,7 @@ import os, subprocess, sys, logging, pygsheets
 from datetime import datetime
 
 # Global Variables
-HEADER = '"timestamp", "server name", "server id", "idle latency", "idle jitter", "packet loss", "download (bytes)", "upload (bytes)", "download bytes", "upload bytes", "share url", "download server count", "download latency", "download latency jitter", "download latency low", "download latency high", "upload latency", "upload latency jitter", "upload latency low", "upload latency high", "idle latency low", "idle latency high"\n'
+HEADER = '"timestamp","server name","server id","idle latency","idle jitter","packet loss","download (bytes)","upload (bytes)","download bytes","upload bytes","share url","download server count","download latency","download latency jitter","download latency low","download latency high","upload latency","upload latency jitter","upload latency low","upload latency high","idle latency low","idle latency high"\n'
 DIR_PATH = os.path.dirname(os.path.realpath(__file__))
 OUTPUT_FILE = "output.csv"
 TIMESTAMP = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -31,7 +31,14 @@ def sheets(results: str):
     """
     # Authorise with google
     log.info("Authorising with Google")
-    google = pygsheets.authorize()
+    try:
+        google = pygsheets.authorize()
+    except FileNotFoundError:
+        log.error("Secrets file './app/client_secret.json' not available. Please create one using the following tutorial - https://pygsheets.readthedocs.io/en/staging/authorization.html")
+        quit()
+    except Exception as e:
+        log.error(e)
+        quit()
     # Check if speedtest sheet is available, if not create it.
     log.info(f"Opening Sheet '{SHEET_NAME}'")
     try:
@@ -39,6 +46,7 @@ def sheets(results: str):
     except pygsheets.exceptions.SpreadsheetNotFound:
         log.error(f"Spreadsheet '{SHEET_NAME}' not found, creating it!")
         sheet = google.create(SHEET_NAME)
+    log.info(f"Sheet can be seen here: {sheet.url}")
     # Confirm if current month has an available sheet.
     try:
         worksheet = sheet.worksheet_by_title(MONTH)
@@ -47,7 +55,7 @@ def sheets(results: str):
         # Create worksheet
         worksheet = sheet.add_worksheet(MONTH)
         # Add header row
-        worksheet.update_row(1, header.replace('"', "").strip().split(","))
+        worksheet.update_row(1, HEADER.replace('"', "").strip().split(","))
     # Append results to next row
     log.info(f"Appending results to '{SHEET_NAME} - {MONTH}'")
     worksheet.append_table(results.replace('"', "").strip().split(","), "A1")
