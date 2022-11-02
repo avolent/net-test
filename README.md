@@ -13,7 +13,7 @@ Tool is built with the https://3musketeers.io framework in mind.
 ## Usage
 
 ### Requirements
-- Unix-like System or Windows Subsystem Linux
+- Unix-like System or Windows Subsystem Linux that supports docker.
 - Make -  If not already installed, `apt update && apt install make` or using your OS own package manager commands.
 - Docker & Docker Compose - Follow instructions [here](https://docs.docker.com/engine/install/).
 - Google AUTH0 Key for Google Sheet/Drive API - Follow instructions [here](https://pygsheets.readthedocs.io/en/staging/authorization.html) for Auth0.
