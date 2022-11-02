@@ -4,7 +4,7 @@
 
 ## Goal
 
-The goal is to add more features that I would use to track my internet speed over a period of time at certain intervals.
+The goal is to add more features that I can use to track my internet speed over a period of time at certain intervals.
 
 ## Design
 
@@ -13,21 +13,27 @@ Tool is built with the https://3musketeers.io framework in mind.
 ## Usage
 
 ### Requirements
-The following tools need to be installed before running the tool.
-- Docker
-- Docker Compose
-- Make
-- Google AUTH0 Key for Google Sheet/Drive API
+- Unix-like System or Windows Subsystem Linux
+- Make -  If not already installed, `apt update && apt install make` or using your OS own package manager commands.
+- Docker & Docker Compose - Follow instructions [here](https://docs.docker.com/engine/install/).
+- Google AUTH0 Key for Google Sheet/Drive API - Follow instructions [here](https://pygsheets.readthedocs.io/en/staging/authorization.html) for Auth0.
 
 ### Using the tool
 
-1. Clone the git repository.
-1. Run `make run_test` within the root of the repository.
-1. Speedtest results will be outputted into the file "output.csv" in the app folder.
+1. `git clone git@github.com:avolent/net-test.git && cd net-test`
+1. Run `make run_test` within the root of the repository. **You will need to run the tool once and authorise your google account before being able to use google sheets.**
+1. Once completed, results will be outputted into the file "./app/output.csv".
 
 #### More Commands
 
+make run - Run the docker without rebuilding the image.
+make build - Build the docker image
 make help - Show the help output for speedtest cli.
-make servers - 
+make servers - List the current preferred servers, based on your location and latency.
+make bash - Enter the docker containers bash terminal. (Useful for debugging and developing new features on the fly)
+make clean - Remove and delete all docker images, configuration and network adapters
 
+### Developing
 
+If you would like to develop/test new features for the python script, run `make bash`.
+This will enter you into the docker container bash environment and allow you to run the script on the fly (`python net-test.py`) and test new changes within the app folder.

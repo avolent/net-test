@@ -6,3 +6,6 @@ output.csv
 
 # API Key
 *.json
+
+# Log files
+*.log
