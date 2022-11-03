@@ -14,13 +14,13 @@ Tool is built with the https://3musketeers.io framework in mind.
 
 ### Requirements
 - Unix-like System or Windows Subsystem Linux that supports docker.
-- Make -  If not already installed, `apt update && apt install make` or using your OS own package manager commands.
+- Make -  If not already installed, `sudo apt-get update && apt install make` or using your OS own package manager commands.
 - Docker & Docker Compose - Follow instructions [here](https://docs.docker.com/engine/install/).
 - Google AUTH0 Key for Google Sheet/Drive API - Follow instructions [here](https://pygsheets.readthedocs.io/en/staging/authorization.html) for Auth0.
 
 ### Using the tool
 
-1. `git clone git@github.com:avolent/net-test.git && cd net-test`
+1. `git clone https://github.com/avolent/net-test.git && cd net-test`
 1. Run `make run_test` within the root of the repository. **You will need to run the tool once and authorise your google account before being able to use google sheets.**
 1. Once completed, results will be outputted into the file "./app/output.csv".
 1. Use [crontab](https://crontab.guru) to schedule executions automatically.
