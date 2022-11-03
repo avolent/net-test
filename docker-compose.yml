@@ -5,9 +5,6 @@ services:
     image: nettest:1
     build: .
     volumes:
-      - type: bind
-        source: ./app
-        target: /app
-      - type: bind
-        source: ./ookla
-        target: /root/.config/ookla
+      - ./app:/app
+      - ./ookla:/root/.config/ookla
+      - /etc/localtime:/etc/localtime:ro
