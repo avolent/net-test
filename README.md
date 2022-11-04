@@ -23,7 +23,7 @@ Tool is built with the https://3musketeers.io framework in mind.
 1. Run `make run_test` within the root of the repository. **You will need to run the tool once and authorise your google account before being able to use google sheets.** 
 
 (If you're using Docker Desktop then make sure to have it open and you can put it to a side or command will not run, while the command is executing you should see a container called 'net-test' popup)
-1. Once completed, results will be outputted into the file "./app/output.csv".
+1. Once completed, it will give your google sheet url. Every other run will append the results to the same sheet.
 1. Use [crontab](https://crontab.guru) to schedule executions automatically.
 
 ### More Commands
