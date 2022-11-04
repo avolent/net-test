@@ -16,7 +16,7 @@ Tool is built with the https://3musketeers.io framework in mind.
 - Unix-like System or Windows Subsystem Linux.
 - Make - If not already installed, `sudo apt update && sudo apt install make` or using your OS own package manager commands.
 - Docker & Docker Compose - Linux instructions [here](https://docs.docker.com/engine/install/) or install [Docker Desktop](https://www.docker.com/products/docker-desktop/) (Enable WSL Support in setup)
-- Google OAuth Key for Google Sheet/Drive API - Follow instructions [here](#google-0auth-setup-for-sheets) for Auth0.
+- Google Service Account for Google Sheet/Drive API - Follow instructions [here](#google-service-account-setup-for-sheets) for an Google Service Account.
 
 ## Usage
 1. First `git clone https://github.com/avolent/net-test.git && cd net-test`
@@ -34,31 +34,19 @@ make servers # List the current preferred servers, based on your location and la
 make bash # Enter the docker containers bash terminal. (Useful for debugging and developing new features on the fly)
 make clean # Remove and delete all docker images, configuration and network adapters
 ```
-### Google 0Auth Setup for Sheets
+### Google Service Account Setup for Sheets
 1. Create a project for the speedtest [here](https://console.cloud.google.com/projectcreate)
 1. Enable the following two APIs in your Google Console:
 [Google Drive API](https://console.cloud.google.com/apis/api/drive.googleapis.com/) &
 [Google Sheets API](https://console.cloud.google.com/apis/api/sheets.googleapis.com/)
-1. Configure your OAuth Consent screen first [here](https://console.cloud.google.com/apis/credentials/consent)
+1. Create a service account [here](https://console.cloud.google.com/iam-admin/serviceaccounts/create)
     ```
-    *Minimum Configuration*
-    User Type: External
-    > Create
-    App Name: Speedtest
-    User Support Email: $Your_email
-    Developer contact information: $Your_email
-    > Save and Continue
-    > Save and Continue
-    Test Users: $Your_email
-    > Save and Continue
+    Service Account Name: Speedtest
+    > Done
     ```
-1. Create an OAuth Credential [here](https://console.cloud.google.com/apis/credentials/oauthclient).
-    ```
-    Application Type: Desktop
-    Name: Speedtest
-    ```
-1. Download the JSON file, place into your the "/app" directory in the clone repository. Rename it to `client_secret.json`.
-1. On first run of the script you will be asked to click a link and authorise your account. Paste in the code given and after this the app will be able create/edit spreadsheets in your google drive.
+1. Open that account, go to keys and create a JSON key.
+1. Download the JSON file, place into your the "/app" directory in the cloned repository. Rename it to `service_account.json`.
+1. Create a spreadsheet with the name "Speedtest" and share access with the client email found in `service_account.json`.
 
 ## Developing
 

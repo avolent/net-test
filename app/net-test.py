@@ -1,4 +1,4 @@
-import os, subprocess, sys, logging, pygsheets
+import os, subprocess, sys, logging, gspread
 from datetime import datetime
 
 # Configuration
@@ -39,9 +39,9 @@ def sheets(results: str):
     # Authorise with google
     log.info("Authorising with Google")
     try:
-        google = pygsheets.authorize()
+        google = gspread.service_account("service_account.json")
     except FileNotFoundError:
-        log.error("Secrets file './app/client_secret.json' not available. Please create one using the following tutorial - https://pygsheets.readthedocs.io/en/staging/authorization.html")
+        log.error("Secrets file './app/service_account.json' not available. Please follow 'Google Service Account Setup for Sheets' https://github.com/avolent/net-test")
         quit()
     except Exception as e:
         log.error(e)
@@ -50,26 +50,23 @@ def sheets(results: str):
     log.info(f"Opening Sheet '{SHEET_NAME}'")
     try:
         sheet = google.open(SHEET_NAME)
-    except pygsheets.exceptions.SpreadsheetNotFound:
-        log.error(f"Spreadsheet '{SHEET_NAME}' not found, creating it!")
-        sheet = google.create(SHEET_NAME)
-        # Update sheet1 name to the current month
-        sheet.sheet1.title = MONTH
-        # Add header row
-        sheet.sheet1.update_row(1, HEADER.replace('"', "").strip().split(","))
+    except gspread.exceptions.SpreadsheetNotFound:
+        log.error(f"Spreadsheet '{SHEET_NAME}' not found, please share access using the service account email")
+        quit()
     log.info(f"Sheet can be seen here: {sheet.url}")
     # Confirm if current month has an available sheet.
     try:
-        worksheet = sheet.worksheet_by_title(MONTH)
-    except pygsheets.exceptions.WorksheetNotFound:
+        worksheet = sheet.worksheet(MONTH)
+    except gspread.exceptions.WorksheetNotFound:
         log.error(f"Worksheet for '{MONTH}' doesnt exist, creating!")
         # Create worksheet
-        worksheet = sheet.add_worksheet(MONTH)
+        worksheet = sheet.add_worksheet(title=MONTH, rows=9999, cols=22)
         # Add header row
-        worksheet.update_row(1, HEADER.replace('"', "").strip().split(","))
+        worksheet.update("A1", [HEADER.replace('"', "").strip().split(",")])
     # Append results to next row
+    row = len(worksheet.col_values(1)) + 1
     log.info(f"Appending results to '{SHEET_NAME} - {MONTH}'")
-    worksheet.append_table(results.replace('"', "").strip().split(","), "A1")
+    worksheet.update("A" + str(row), [results.replace('"', "").strip().split(",")])
 
 def speedtest(args: list) -> str:
     """Function for running the speedtest command.
@@ -103,7 +100,7 @@ def main(args: list):
     # Checks for output.csv file, creates if not available.
     if not os.path.exists(f"{DIR_PATH}/{OUTPUT_FILE}"):
         log.error(f"Output file '{OUTPUT_FILE}' doesnt exist. Creating!")
-        file_write(HEADER)
+        file_write(OUTPUT_FILE, HEADER)
     # Runs speedtest function and sets results to a variable
     results = speedtest(args)
     if not set(["CSV", "csv"]).isdisjoint(set(args)):
