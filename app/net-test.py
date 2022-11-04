@@ -103,7 +103,7 @@ def main(args: list):
     # Checks for output.csv file, creates if not available.
     if not os.path.exists(f"{DIR_PATH}/{OUTPUT_FILE}"):
         log.error(f"Output file '{OUTPUT_FILE}' doesnt exist. Creating!")
-        file_write(HEADER)
+        file_write(OUTPUT_FILE, HEADER)
     # Runs speedtest function and sets results to a variable
     results = speedtest(args)
     if not set(["CSV", "csv"]).isdisjoint(set(args)):
