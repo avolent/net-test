@@ -1,26 +1,33 @@
 import os, subprocess, sys, logging, pygsheets
 from datetime import datetime
 
-# Global Variables
+# Configuration
+csv = True # Enable/Disable CSV Output
+google_sheets = True # Enable/Disable Google Sheets
+
+# File & Google Sheet Variables
 HEADER = '"timestamp","server name","server id","idle latency","idle jitter","packet loss","download (bytes)","upload (bytes)","download bytes","upload bytes","share url","download server count","download latency","download latency jitter","download latency low","download latency high","upload latency","upload latency jitter","upload latency low","upload latency high","idle latency low","idle latency high"\n'
 DIR_PATH = os.path.dirname(os.path.realpath(__file__))
 OUTPUT_FILE = "output.csv"
-TIMESTAMP = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 SHEET_NAME = "Speedtest"
+
+# Time Variables
+TIMESTAMP = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 MONTH = datetime.now().strftime("%Y-%m")
 
 # Logging Settings
-logging.basicConfig(filename='run.log' ,encoding='utf-8', level=logging.INFO, format='%(asctime)s:%(name)s:%(levelname)s:%(message)s')
+logging.basicConfig(filename='run.log' ,encoding='utf-8', level=logging.DEBUG, format='%(asctime)s:%(name)s:%(levelname)s:%(message)s')
 log = logging.getLogger("net-test")
 log.addHandler(logging.StreamHandler())
 
 
-def file_write(input: str):
+def file_write(file: str, input: str):
     """Function for writing a string to the output csv file.
 
     :param input: str - The string that will be written to the file.
     """
-    f = open(OUTPUT_FILE, "a")
+    f = open(file, "a")
+    log.info(f"Writing to {file}")
     f.write(input)
     f.close()
 
@@ -46,6 +53,7 @@ def sheets(results: str):
     except pygsheets.exceptions.SpreadsheetNotFound:
         log.error(f"Spreadsheet '{SHEET_NAME}' not found, creating it!")
         sheet = google.create(SHEET_NAME)
+        sheet.sheet1.title = MONTH
     log.info(f"Sheet can be seen here: {sheet.url}")
     # Confirm if current month has an available sheet.
     try:
@@ -81,6 +89,7 @@ def speedtest(args: list) -> str:
         log.info("License accepted, continuing.")
         args.append("--accept-license")
         results = subprocess.run(args, capture_output=True, text=True)
+    log.debug(results)
     return results.stdout
 
 def main(args: list):
@@ -96,9 +105,11 @@ def main(args: list):
     results = speedtest(args)
     if not set(["CSV", "csv"]).isdisjoint(set(args)):
         # Write to local file
-        file_write(f'"{TIMESTAMP}", {results}')
+        if csv:
+            file_write(OUTPUT_FILE, f'"{TIMESTAMP}", {results}')
         # Google sheets
-        sheets(f'"{TIMESTAMP}", {results}')
+        if google_sheets:
+            sheets(f'"{TIMESTAMP}", {results}')
 
 if __name__ == "__main__":
     main(sys.argv)
