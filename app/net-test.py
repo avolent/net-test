@@ -53,7 +53,10 @@ def sheets(results: str):
     except pygsheets.exceptions.SpreadsheetNotFound:
         log.error(f"Spreadsheet '{SHEET_NAME}' not found, creating it!")
         sheet = google.create(SHEET_NAME)
+        # Update sheet1 name to the current month
         sheet.sheet1.title = MONTH
+        # Add header row
+        sheet.sheet1.update_row(1, HEADER.replace('"', "").strip().split(","))
     log.info(f"Sheet can be seen here: {sheet.url}")
     # Confirm if current month has an available sheet.
     try:
