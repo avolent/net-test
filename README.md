@@ -27,12 +27,14 @@ Tool is built with the https://3musketeers.io framework in mind.
 
 #### More Commands
 
+```bash
 make run - Run the docker without rebuilding the image.
 make build - Build the docker image
 make help - Show the help output for speedtest cli.
 make servers - List the current preferred servers, based on your location and latency.
 make bash - Enter the docker containers bash terminal. (Useful for debugging and developing new features on the fly)
 make clean - Remove and delete all docker images, configuration and network adapters
+```
 
 ### Developing
 
