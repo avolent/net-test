@@ -106,10 +106,10 @@ def main(args: list):
     if not set(["CSV", "csv"]).isdisjoint(set(args)):
         # Write to local file
         if csv:
-            file_write(OUTPUT_FILE, f'"{TIMESTAMP}", {results}')
+            file_write(OUTPUT_FILE, f'"{TIMESTAMP}",{results}')
         # Google sheets
         if google_sheets:
-            sheets(f'"{TIMESTAMP}", {results}')
+            sheets(f'"{TIMESTAMP}",{results}')
 
 if __name__ == "__main__":
     main(sys.argv)
