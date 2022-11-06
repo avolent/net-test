@@ -63,10 +63,28 @@ def sheets(results: str):
         worksheet = sheet.add_worksheet(title=MONTH, rows=9999, cols=22)
         # Add header row
         worksheet.update("A1", [HEADER.replace('"', "").strip().split(",")])
+        worksheet.format("1", {
+            "backgroundColor": {
+            "red": 0.0,
+            "green": 0.0,
+            "blue": 0.0
+            },
+            "horizontalAlignment": "CENTER",
+            "wrapStrategy": "WRAP",
+            "textFormat": {
+            "foregroundColor": {
+                "red": 1.0,
+                "green": 1.0,
+                "blue": 1.0
+            },
+            "fontSize": 10,
+            "bold": True
+            }
+        })
     # Append results to next row
-    row = len(worksheet.col_values(1)) + 1
     log.info(f"Appending results to '{SHEET_NAME} - {MONTH}'")
-    worksheet.update("A" + str(row), [results.replace('"', "").strip().split(",")])
+    print(results)
+    worksheet.append_row(results.replace('"', "").strip().split(","), value_input_option='USER_ENTERED')
 
 def speedtest(args: list) -> str:
     """Function for running the speedtest command.
