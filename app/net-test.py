@@ -6,7 +6,7 @@ csv = True # Enable/Disable CSV Output
 google_sheets = True # Enable/Disable Google Sheets
 
 # File & Google Sheet Variables
-HEADER = '"timestamp","server name","server id","idle latency","idle jitter","packet loss","download (bytes)","upload (bytes)","download bytes","upload bytes","share url","download server count","download latency","download latency jitter","download latency low","download latency high","upload latency","upload latency jitter","upload latency low","upload latency high","idle latency low","idle latency high"\n'
+HEADER = '"timestamp","server name","server id","idle latency","idle jitter","packet loss","download speed (bytes)","upload speed(bytes)","download bytes","upload bytes","share url","download server count","download latency","download latency jitter","download latency low","download latency high","upload latency","upload latency jitter","upload latency low","upload latency high","idle latency low","idle latency high"\n'
 DIR_PATH = os.path.dirname(os.path.realpath(__file__))
 OUTPUT_FILE = "output.csv"
 SHEET_NAME = "Speedtest"
