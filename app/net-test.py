@@ -61,7 +61,7 @@ def sheets(results: str):
         log.error(f"Worksheet for '{MONTH}' doesnt exist, creating!")
         # Create worksheet
         worksheet = sheet.add_worksheet(title=MONTH, rows=9999, cols=22)
-        # Add header row
+        # Add header row & format it
         worksheet.update("A1", [HEADER.replace('"', "").strip().split(",")])
         worksheet.format("1", {
             "backgroundColor": {
@@ -83,7 +83,6 @@ def sheets(results: str):
         })
     # Append results to next row
     log.info(f"Appending results to '{SHEET_NAME} - {MONTH}'")
-    print(results)
     worksheet.append_row(results.replace('"', "").strip().split(","), value_input_option='USER_ENTERED')
 
 def speedtest(args: list) -> str:
