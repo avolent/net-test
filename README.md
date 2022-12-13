@@ -1,30 +1,32 @@
 <h1 align="center">Net-Test</h1>
 
-> A Python wrapper for the Speedtest CLI from [Speedtest.net](https://www.speedtest.net/apps/cli) with my own twist.
+> A Python wrapper for the Speedtest CLI from [Speedtest.net](https://www.speedtest.net/apps/cli) with my own twist.  
 
 ## Goal
 
-The goal is to add more features that I can use to track my internet speed over a period of time at certain intervals.
+The goal is to add more features that I can use to track my internet speed over a period of time at certain intervals.  
 
 ## Design
 
-Tool is built with the https://3musketeers.io framework in mind.
+Tool is built with the https://3musketeers.io framework in mind.  
 
-
+## Features
+- Run a speedtest at intervals using speedtest.net.
+- Output results into a CSV file.
+- Output results into a Google Doc.
+- Output results to a DB (Future)
 
 ## Requirements
 - Unix-like System or Windows Subsystem Linux.
-- Make - If not already installed, `sudo apt update && sudo apt install make` or using your OS own package manager commands.
-- Docker & Docker Compose - Linux instructions [here](https://docs.docker.com/engine/install/) or install [Docker Desktop](https://www.docker.com/products/docker-desktop/) (Enable WSL Support in setup)
-- Google Service Account for Google Sheet/Drive API - Follow instructions [here](#google-service-account-setup-for-sheets) for an Google Service Account.
+- Make - If not already installed, `sudo apt update && sudo apt install make` or using your OS own package manager commands.  
+- Docker & Docker Compose - Linux instructions [here](https://docs.docker.com/engine/install/) or install [Docker Desktop](https://www.docker.com/products/docker-desktop/) (Enable WSL Support in setup). 
+- Google Service Account for Google Sheet/Drive API - Follow instructions [here](#google-service-account-setup-for-sheets) for an Google Service Account.  
 
 ## Usage
 1. First `git clone https://github.com/avolent/net-test.git && cd net-test`
 2. Run `make run_test` within the root of the repository. **You will need to run the tool once and authorise your google account before being able to use google sheets.** 
-
-(If you're using Docker Desktop then make sure to have it open and you can put it to a side or command will not run, while the command is executing you should see a container called 'net-test' popup)
-
-3. Once completed, results will be outputted into the file "./app/output.csv". It will give your google sheet url, every other run will append the results to the same sheet.
+(If you're using Docker Desktop then make sure to have it running in the background and while the command is executing you should see a container called 'net-test' popup) 
+3. Once completed, results will be output into the file "./app/output.csv". It will give your google sheet url, every other run will append the results to the same sheet.
 4. Use [crontab](https://crontab.guru) to schedule executions automatically.
 
 ### More Commands
@@ -53,5 +55,5 @@ make clean # Remove and delete all docker images, configuration and network adap
 
 ## Developing
 
-If you would like to develop/test new features for the python script, run `make bash`.
-This will enter you into the docker container bash environment and allow you to run the script on the fly (`python net-test.py`). You can test new changes within the app folder live from using this method.
+If you would like to develop/test new features for the python script, run `make bash`.  
+This will enter you into the docker container bash environment and allow you to run the script on the fly (`python net-test.py`). You can test new changes within the app folder live from using this method.  
