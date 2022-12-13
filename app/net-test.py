@@ -2,8 +2,9 @@ import os, subprocess, sys, logging, gspread
 from datetime import datetime
 
 # Configuration
-csv = True # Enable/Disable CSV Output
-google_sheets = True # Enable/Disable Google Sheets
+CSV = True # Enable/Disable CSV Output
+GOOGLE_SHEETS = True # Enable/Disable Google Sheets
+LOG_LEVEL = logging.INFO # NOTSET=0, DEBUG=10, INFO=20, WARN=30, ERROR=40, CRITICAL=50
 
 # File & Google Sheet Variables
 HEADER = '"timestamp","server name","server id","idle latency","idle jitter","packet loss","download speed (bytes)","upload speed(bytes)","download bytes","upload bytes","share url","download server count","download latency","download latency jitter","download latency low","download latency high","upload latency","upload latency jitter","upload latency low","upload latency high","idle latency low","idle latency high"\n'
@@ -16,7 +17,7 @@ TIMESTAMP = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 MONTH = datetime.now().strftime("%Y-%m")
 
 # Logging Settings
-logging.basicConfig(filename='run.log' ,encoding='utf-8', level=logging.DEBUG, format='%(asctime)s:%(name)s:%(levelname)s:%(message)s')
+logging.basicConfig(filename='run.log' ,encoding='utf-8', level=LOG_LEVEL, format='%(asctime)s:%(name)s:%(levelname)s:%(message)s')
 log = logging.getLogger("net-test")
 log.addHandler(logging.StreamHandler())
 
@@ -115,6 +116,7 @@ def main(args: list):
     param: args: list - A list of arguments from the command line.
     """
     # Checks for output.csv file, creates if not available.
+    log.debug(args)
     if not os.path.exists(f"{DIR_PATH}/{OUTPUT_FILE}"):
         log.error(f"Output file '{OUTPUT_FILE}' doesnt exist. Creating!")
         file_write(OUTPUT_FILE, HEADER)
@@ -122,11 +124,12 @@ def main(args: list):
     results = speedtest(args)
     if not set(["CSV", "csv"]).isdisjoint(set(args)):
         # Write to local file
-        if csv:
+        if CSV:
             file_write(OUTPUT_FILE, f'"{TIMESTAMP}",{results}')
         # Google sheets
-        if google_sheets:
+        if GOOGLE_SHEETS:
             sheets(f'"{TIMESTAMP}",{results}')
+    log.info(results)
 
 if __name__ == "__main__":
     main(sys.argv)
