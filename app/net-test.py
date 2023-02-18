@@ -4,7 +4,7 @@ from datetime import datetime
 # Configuration
 CSV = True # Enable/Disable CSV Output
 GOOGLE_SHEETS = True # Enable/Disable Google Sheets
-LOG_LEVEL = logging.INFO # NOTSET=0, DEBUG=10, INFO=20, WARN=30, ERROR=40, CRITICAL=50
+LOG_LEVEL = logging.WARN # NOTSET=0, DEBUG=10, INFO=20, WARN=30, ERROR=40, CRITICAL=50
 
 # File & Google Sheet Variables
 HEADER = '"timestamp","server name","server id","idle latency","idle jitter","packet loss","download speed (bytes)","upload speed(bytes)","download bytes","upload bytes","share url","download server count","download latency","download latency jitter","download latency low","download latency high","upload latency","upload latency jitter","upload latency low","upload latency high","idle latency low","idle latency high"\n'
@@ -102,12 +102,16 @@ def speedtest(args: list) -> str:
     # If license has not been accepted yet, ask user for acceptance and if not quit the program.
     if results.returncode == 1:
         log.error(results.stderr)
-        if not input("Do you accept the license? [type YES to accept]: ").upper() == 'YES':
-            log.error("License not accepted, quiting.")
+        # Confirm if error is not because of license not being accepted.
+        if len(os.listdir("/root/.config/ookla")) == 0:
+            if not input("Do you accept the license? [type YES to accept]: ").upper() == 'YES':
+                log.error("License not accepted, quiting.")
+                quit()
+            log.info("License accepted, continuing.")
+            args.append("--accept-license")
+            results = subprocess.run(args, capture_output=True, text=True)
+        else:
             quit()
-        log.info("License accepted, continuing.")
-        args.append("--accept-license")
-        results = subprocess.run(args, capture_output=True, text=True)
     log.debug(results)
     return results.stdout
 
