@@ -39,6 +39,9 @@ make servers # List the current preferred servers, based on your location and la
 make bash # Enter the docker containers bash terminal. (Useful for debugging and developing new features on the fly)
 make clean # Remove and delete all docker images, configuration and network adapters
 ```
+
+*If you want to run custom arguments or specify a server. Do so like this `make ARGUMENTS="-f csv -A -s 12345" run_test`*
+
 ### Google Service Account Setup for Sheets
 1. Create a project for the speedtest [here](https://console.cloud.google.com/projectcreate)
 1. Enable the following two APIs in your Google Console:
