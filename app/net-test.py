@@ -82,6 +82,7 @@ def sheets(results: str):
             "bold": True
             }
         })
+        worksheet.freeze("1", "0")
     # Append results to next row
     log.info(f"Appending results to '{SHEET_NAME} - {MONTH}'")
     worksheet.append_row(results.replace('"', "").strip().split(","), value_input_option='USER_ENTERED')
